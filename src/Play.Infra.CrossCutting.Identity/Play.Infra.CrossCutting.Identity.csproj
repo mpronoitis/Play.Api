@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="jose-jwt" Version="4.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Play.Domain.Core\Play.Domain.Core.csproj"/>
+    </ItemGroup>
+</Project>

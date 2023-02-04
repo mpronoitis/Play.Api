@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Play.Application.Contact\Play.Application.Contact.csproj"/>
+        <ProjectReference Include="..\Play.Application.Contracting\Play.Application.Contracting.csproj"/>
+        <ProjectReference Include="..\Play.Application.Core\Play.Application.Core.csproj"/>
+        <ProjectReference Include="..\Play.Application.Edi\Play.Application.Edi.csproj"/>
+        <ProjectReference Include="..\Play.Application.Epp\Play.Application.Epp.csproj"/>
+        <ProjectReference Include="..\Play.Domain.Contact\Play.Domain.Contact.csproj"/>
+        <ProjectReference Include="..\Play.Domain.Epp\Play.Domain.Epp.csproj"/>
+        <ProjectReference Include="..\Play.Domain.Pylon\Play.Domain.Pylon.csproj"/>
+        <ProjectReference Include="..\Play.Infra.Data\Play.Infra.Data.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="12.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0"/>
+
+    </ItemGroup>
+</Project>

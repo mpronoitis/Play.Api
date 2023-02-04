@@ -1,0 +1,12 @@
+﻿global using AutoMapper;
+global using Play.Application.Core.ViewModels;
+global using Play.Application.Edi.ViewModels;
+global using Play.Application.Epp.ViewModels;
+global using Play.Domain.Core.Models;
+global using Play.Domain.Edi.Models;
+global using Play.Domain.Epp.Models;
+global using AutoMapper;
+global using Play.Application.Core.ViewModels;
+global using Play.Application.Edi.ViewModels;
+global using Play.Application.Epp.ViewModels;
+global using Play.Domain.Epp.Models;

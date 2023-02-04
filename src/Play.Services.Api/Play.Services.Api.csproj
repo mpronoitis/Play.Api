@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <UserSecretsId>b543be42-f7ab-48b6-b633-72d6fb529fb7</UserSecretsId>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="DotNetRateLimiter" Version="1.0.2" />
+        <PackageReference Include="Hangfire.Dashboard.BasicAuthorization" Version="1.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+
+        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Play.Application.EventSourcing\Play.Application.EventSourcing.csproj" />
+        <ProjectReference Include="..\Play.BackgroundJobs.Malwarebytes\Play.BackgroundJobs.Malwarebytes.csproj" />
+        <ProjectReference Include="..\Play.BackgroundJobs.Pylon\Play.BackgroundJobs.Pylon.csproj" />
+        <ProjectReference Include="..\Play.Domain.Pylon\Play.Domain.Pylon.csproj" />
+        <ProjectReference Include="..\Play.Application\Play.Application.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Bus\Play.Infra.CrossCutting.Bus.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Epp\Play.Infra.CrossCutting.Epp.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Hangfire\Play.Infra.CrossCutting.Hangfire.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Identity\Play.Infra.CrossCutting.Identity.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.IoC\Play.Infra.CrossCutting.IoC.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Mail\Play.Infra.CrossCutting.Mail.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Mbam\Play.Infra.CrossCutting.Mbam.csproj" />
+        <ProjectReference Include="..\Play.Infra.CrossCutting.Whmcs\Play.Infra.CrossCutting.Whmcs.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Logs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Remove="nuget.config" />
+    </ItemGroup>
+</Project>

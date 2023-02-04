@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  play.services.api:
+    image: ghcr.io/playsystems-integrator/play.api:latest
+    container_name: play.services.api
+    hostname: play.services.api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/heartbeat/check"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.playapi.entrypoints=web"
+      - "traefik.http.routers.playapi.rule=Host(`api.playsystems.io`, `www.api.playsystems.io`)"
+      - "traefik.http.routers.playapi.tls.certresolver=lets-encr"
+      - "traefik.http.routers.playapi.rule=Host(`api.playsystems.io`)"
+      - "traefik.http.routers.playapi.entrypoints=websecure"
+      #we want to add basic auth in the /hangfire route
+      - "traefik.http.routers.playapihangfire.rule=Host(`api.playsystems.io`) && PathPrefix(`/hangfire`)"
+      - "traefik.http.routers.playapihangfire.middlewares=playapihangfireauth"
+      - "traefik.http.middlewares.playapihangfireauth.basicauth.users=user:$$apr1$$ifZ0Jrb5$$qKQwogNplnC40w53VNTPO0"
+      - "traefik.http.routers.playapihangfire.entrypoints=websecure"
+      - "traefik.http.routers.playapihangfire.tls.certresolver=lets-encr"
+      - "traefik.http.routers.playapihangfire.service=playapihangfire"
+      - "traefik.http.services.playapihangfire.loadbalancer.server.port=80"
+networks:
+  default:
+    external:
+      name: traefik_net

@@ -1,0 +1,40 @@
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+#install prerequisites (curl)
+RUN apt-get update && apt-get install -y curl
+
+
+#Add timezone and locale to ENV for Greece athens
+ENV TZ=Europe/Athens
+ENV LANG el_GR.UTF-8
+ENV LANGUAGE ${LANG}
+ENV LC_ALL ${LANG}
+
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+
+#load nuget.config
+COPY nuget.config .
+#print that the nuget.config is loaded
+RUN echo "nuget.config loaded"
+
+COPY ["src/Play.Services.Api/Play.Services.Api.csproj", "src/Play.Services.Api/"]
+RUN dotnet restore "src/Play.Services.Api/Play.Services.Api.csproj"
+COPY . .
+WORKDIR "/src/src/Play.Services.Api"
+#replace Play.Services.Api/appsettings.json with Play.Services.Api/appsettings.Staging.json
+RUN rm appsettings.json
+RUN mv appsettings.Staging.json appsettings.json
+RUN dotnet build "Play.Services.Api.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Play.Services.Api.csproj" -c Release -o /app/publish --configfile ../../nuget.config
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Play.Services.Api.dll"]

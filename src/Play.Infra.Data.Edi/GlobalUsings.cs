@@ -1,0 +1,16 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using Microsoft.Extensions.Logging;
+global using Newtonsoft.Json;
+global using Play.Domain.Core.Interfaces;
+global using Play.Domain.Edi.Interfaces;
+global using Play.Domain.Edi.Models;
+global using Microsoft.EntityFrameworkCore;
+global using NetDevPack.Data;
+global using Play.Infra.Data.Context;
+global using System.Globalization;
+global using System.Text;
+global using FluentFTP;

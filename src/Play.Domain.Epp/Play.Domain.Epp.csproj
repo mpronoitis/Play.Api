@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NetDevPack" Version="6.0.1" />
+        <PackageReference Include="Play.Epp.Connector" Version="2023.2.2.113742" />
+    </ItemGroup>
+
+</Project>

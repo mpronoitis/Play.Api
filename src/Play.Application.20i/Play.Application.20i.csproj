@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>Play.Application._20i</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="20i-api" Version="2022.10.18.155209"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Play.Domain.20i\Play.Domain.20i.csproj"/>
+    </ItemGroup>
+
+</Project>

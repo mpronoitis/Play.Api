@@ -1,0 +1,33 @@
+name: .NET-Build & Test
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  BuildAndTest:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
+      - name: Remove github nuget source
+        run: dotnet nuget remove source github || true
+      - name: Add github nuget source
+        run: dotnet nuget add source --username unavoidable0100 -p ${{ secrets.NUGET_API_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/PlaySystems-Integrator/index.json" || true
+      - name: Clean
+        run: dotnet clean
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --collect "XPlat Code Coverage"
+      - name: Cleanup
+        run: dotnet nuget remove source github || true
+          

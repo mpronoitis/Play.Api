@@ -1,0 +1,24 @@
+﻿name: trigger jenkins production pipeline
+on:
+  push:
+    branches:
+      - main
+
+#base jenkins url https://jenkins.playsystems.io
+jobs:
+  build:
+    name: Send Signal to Jenkins
+    runs-on: ubuntu-latest
+    steps:
+        #get crumb 
+        - name: Get Jenkins Crumb
+          id: crumb
+          run: |
+            CRUMB=$(curl -s -u gp:${{ secrets.JENKINS_TOKEN }} 'https://jenkins.playsystems.io/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+            echo "::set-output name=crumb::$CRUMB"
+
+        #send job trigger
+        - name: Trigger Jenkins Job
+          run: |
+            curl -X POST -d "Content-Length: 0" -u gp:${{ secrets.JENKINS_TOKEN }} -H "$CRUMB" 'https://jenkins.playsystems.io/job/Play.Api/job/Production%20-%20Dotnet%20build%20Play.Api/build?token=fuahaiwufhwaiuwa&cause=github%20action'
+    

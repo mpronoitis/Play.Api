@@ -1,0 +1,110 @@
+pipeline {
+  agent any
+  environment {
+    timestamp = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone('UTC'))
+  }
+  stages {
+    stage('Init Github Check') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'github-app-playsystems',
+                                              usernameVariable: 'GITHUB_APP',
+                                              passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
+                sh '''
+                curl -H "Content-Type: application/json" \
+                     -H "Accept: application/vnd.github.antiope-preview+json" \
+                     -H "authorization: Bearer ${GITHUB_ACCESS_TOKEN}" \
+                     -d '{ "name": "Dotnet test", \
+                           "head_sha": "'${GIT_COMMIT}'", \
+                           "status": "in_progress", \
+                           "external_id": "37", \
+                           "started_at": "'${timestamp}'", \
+                           "output": { "title": "test dotnet project!", \
+                                       "summary": "You will be notified when the run has been completed!"}}' https://api.github.com/repos/PlaySystems-Integrator/Play.Api/check-runs
+                '''
+            }
+          }
+        }
+  stage('cleanup') {
+    steps {
+      sh 'dotnet nuget locals all --clear'
+      sh 'dotnet nuget remove source github || true'
+      sh 'dotnet nuget remove source Internal || true'
+    }
+  }
+
+  stage('install dotnet 7') {
+    steps {
+      sh 'apt-get update || true'
+      sh 'apt-get install -y apt-transport-https wget || true'
+      sh 'wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb || true'
+      sh 'dpkg -i packages-microsoft-prod.deb || true'
+      sh 'apt-get update || true'
+      sh 'apt-get install -y dotnet-sdk-7.0 || true'
+    }
+  }
+  stage('add nuget source'){
+      //use gh-org-packages credentials
+          steps {
+              withCredentials([usernamePassword(credentialsId: 'gh-org-packages',
+                                              usernameVariable: 'GH_USER',
+                                              passwordVariable: 'GH_PSW')]) {
+              //update nuget.config with credentials - replace $NUGET_PASSWORD$ with GH_PSW
+sh '''
+dotnet nuget add source --username unavoidable0100 --password $GH_PSW --store-password-in-clear-text --name github "https://nuget.pkg.github.com/PlaySystems-Integrator/index.json"
+'''
+              }
+          }
+          }
+    stage('test') {
+        steps {
+          sh 'dotnet test --no-build --verbosity normal --logger "trx;LogFileName=TestResults.trx"'
+        }
+    }
+    
+    stage('update Github Check') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'github-app-playsystems',
+                                              usernameVariable: 'GITHUB_APP',
+                                              passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
+                sh '''
+                curl -H "Content-Type: application/json" \
+                     -H "Accept: application/vnd.github.antiope-preview+json" \
+                     -H "authorization: Bearer ${GITHUB_ACCESS_TOKEN}" \
+                     -d '{ "name": "Dotnet test", \
+                           "head_sha": "'${GIT_COMMIT}'", \
+                           "status": "completed", \
+                           "conclusion": "success", \
+                           "completed_at": "'${timestamp}'", \
+                           "external_id": "37", \
+                           "output": { "title": "test dotnet project!", \
+                                       "summary": "test completed successfully!"}}' https://api.github.com/repos/PlaySystems-Integrator/Play.Api/check-runs
+                '''
+            }
+          }
+        }
+   }
+   post{
+    failure {
+      withCredentials([usernamePassword(credentialsId: 'github-app-playsystems',
+                                              usernameVariable: 'GITHUB_APP',
+                                              passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
+                sh '''
+                curl -H "Content-Type: application/json" \
+                     -H "Accept: application/vnd.github.antiope-preview+json" \
+                     -H "authorization: Bearer ${GITHUB_ACCESS_TOKEN}" \
+                     -d '{ "name": "Dotnet test", \
+                           "head_sha": "'${GIT_COMMIT}'", \
+                           "status": "completed", \
+                           "conclusion": "failure", \
+                           "completed_at": "'${timestamp}'", \
+                           "external_id": "37", \
+                           "output": { "title": "test dotnet project!", \
+                                       "summary": "test failed!"}}' https://api.github.com/repos/PlaySystems-Integrator/Play.Api/check-runs
+                '''
+            }
+    }
+    always {
+        sh 'dotnet nuget locals all --clear'
+    }
+}
+}

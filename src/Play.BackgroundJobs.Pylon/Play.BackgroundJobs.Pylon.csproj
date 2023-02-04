@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="PylonDatabaseHandler" Version="2022.12.1.114029"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Play.Application.Pylon\Play.Application.Pylon.csproj"/>
+        <ProjectReference Include="..\Play.Domain.Core\Play.Domain.Core.csproj"/>
+    </ItemGroup>
+
+</Project>
